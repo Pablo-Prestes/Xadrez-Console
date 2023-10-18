@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 using tabuleiro;
 using Xadrez;
 
@@ -7,6 +7,40 @@ namespace Xadrez_Console
 {
     class Tela
     {
+        public static void ImprimirPartida(PartidaDeXadrez partida)
+        {
+            ImprimirTabuleiro(partida.Tab);
+            Console.WriteLine(" ");
+            ImprimirPecasCapturadas(partida);
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+            Console.WriteLine("Aguardando jogador: " + partida.JogadorAtual);
+            if (partida.Xeque) 
+            {
+                Console.WriteLine("XEQUE !");
+            } 
+        }
+        public static void ImprimirPecasCapturadas(PartidaDeXadrez partida) 
+        {
+            Console.WriteLine("Peças capturadas: ");
+            Console.Write("Brancas: ");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Branco));
+            Console.WriteLine();
+            Console.Write("Pretas:");
+            ConsoleColor aux = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Preto));
+            Console.ForegroundColor = aux;
+        }
+        public static void ImprimirConjunto(HashSet<Peca>conjunto)
+        {
+            Console.Write("[");
+            foreach (Peca x in conjunto) 
+            {
+                Console.Write(x + ", ");
+            }
+            Console.Write("] ");
+        }
         public static void ImprimirTabuleiro(Tabuleiro tabuleiro)
         {
             for (int i = 0; i < tabuleiro.Linhas; i++)
@@ -43,7 +77,8 @@ namespace Xadrez_Console
                 Console.WriteLine();
             }
             Console.WriteLine("  a b c d e f g h");
-        }   
+        }
+
         public static PosicaoXadrez LerPosicaoXadrez()
         {
             string posicao = Console.ReadLine();
@@ -60,7 +95,7 @@ namespace Xadrez_Console
             else
             {
 
-                if (peca.Cor == Cor.Branca)
+                if (peca.Cor == Cor.Branco)
                 {
                     Console.Write(peca);
                 }
